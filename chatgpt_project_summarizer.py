@@ -46,7 +46,7 @@ def chatgpt_summary(i):
                 
                 
                 with open(file, 'r') as f:
-                    print("\n\n MESSAGE APPENDED \n\n")
+                    #print("\n\n MESSAGE APPENDED \n\n")
                     messages.append({"role": "user", "content": f"File Name: {file_name}, Contents: {f.read()}"})
     return messages
                 
@@ -58,13 +58,13 @@ for folder_name in os.listdir(folder_path):
     folder = os.path.join(folder_path, folder_name)
     if os.path.isdir(folder):
         folders.append(folder)
-print(folders)
+#print(folders)
 
 for i in folders:
     proj_name=(i.replace('repos/', ''))
     print(proj_name)
     project_message = chatgpt_summary(i)
-    print(project_message)
+    #print(project_message)
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=project_message,
@@ -78,3 +78,4 @@ for i in folders:
         summary_file.write(ai_response)
 
 
+print("\n\n     -----finished-----      \n\n")

@@ -1,4 +1,9 @@
 import os
+from openai import OpenAI
+from dotenv import load_dotenv 
+import time
+
+
 summary_files = []
 for summary_name in os.listdir("summaries"):
     summary = os.path.join("summaries", summary_name)
@@ -15,6 +20,7 @@ summary_info = [{"role": "system", "content":
                  },]
 
 choice = input("The current prompt is: | " + str(summary_info[0]['content']) + " |  Would you like to change it? (y/n): ")
+choice = "y"
 if choice == "y":
     new_prompt = input("Enter the new prompt: ")
     summary_info[0]['content'] = new_prompt
@@ -28,7 +34,28 @@ for file_name in os.listdir(directory):
                 
                 
             with open(file, 'r') as f:
-                print("\n\n MESSAGE APPENDED \n\n")
+                
                 summary_info.append({"role": "user", "content": f"File Name: {file_name}, Contents: {f.read()}"})
 
-print(summary_info)
+
+
+
+
+
+load_dotenv()
+client = OpenAI(
+    api_key=os.getenv("API_KEY"),
+    organization=os.getenv("ORGANIZATION"),
+    project=os.getenv("PROJECT"),
+)
+
+response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=summary_info,
+    )
+for _ in range(1000):
+    print("\n")
+print(response)
+time.sleep(10)
+print("\n\n\n\n")
+print(response.choices[0].message.content)

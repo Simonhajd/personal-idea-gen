@@ -2,8 +2,12 @@ import requests
 import subprocess
 import os
 import shutil
+from dotenv import load_dotenv
 
-username = "simonhajd"
+load_dotenv()
+
+
+username = username = os.getenv("GITHUB_USERNAME")
 api_url = f"https://api.github.com/users/{username}/repos"
 
 def clone_repo(repo_url, repo_name):
@@ -28,3 +32,5 @@ if not os.path.exists("./repos"):
     os.makedirs("./repos")
 
 get_repos(api_url)
+
+print("\n\n     -----finished-----      \n\n")
