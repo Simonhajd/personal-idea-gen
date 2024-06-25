@@ -61,7 +61,8 @@ for folder_name in os.listdir(folder_path):
 print(folders)
 
 for i in folders:
-    print(i.replace('repos/', '         '))
+    proj_name=(i.replace('repos/', ''))
+    print(proj_name)
     project_message = chatgpt_summary(i)
     print(project_message)
     response = client.chat.completions.create(
@@ -70,8 +71,9 @@ for i in folders:
     )
 
     ai_response = response.choices[0].message.content
+    
     print("AI: ", ai_response, "\n")
-    summary_file_path = os.path.join(i, 'summary.txt')
+    summary_file_path = os.path.join('summaries', f'summary-{proj_name}.txt')
     with open(summary_file_path, 'w') as summary_file:
         summary_file.write(ai_response)
 
