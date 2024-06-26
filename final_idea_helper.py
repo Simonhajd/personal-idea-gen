@@ -20,7 +20,7 @@ summary_info = [{"role": "system", "content":
                  },]
 
 choice = input("The current prompt is: | " + str(summary_info[0]['content']) + " |  Would you like to change it? (y/n): ")
-choice = "y"
+choice = "n"
 if choice == "y":
     new_prompt = input("Enter the new prompt: ")
     summary_info[0]['content'] = new_prompt
@@ -59,3 +59,7 @@ print(response)
 time.sleep(10)
 print("\n\n\n\n")
 print(response.choices[0].message.content)
+print("\n\n\n\n")
+prompt_tokens = response.usage.prompt_tokens
+response_tokens = response.usage.completion_tokens
+print("Price: ", (((prompt_tokens/1000)*0.005) + ((response_tokens/1000)*0.015)))

@@ -60,6 +60,9 @@ for folder_name in os.listdir(folder_path):
         folders.append(folder)
 #print(folders)
 
+prompt_tokens = 0
+response_tokens = 0
+
 for i in folders:
     proj_name=(i.replace('repos/', ''))
     print(proj_name)
@@ -69,13 +72,18 @@ for i in folders:
         model="gpt-4o",
         messages=project_message,
     )
-
+    prompt_tokens += response.usage.prompt_tokens
+    response_tokens += response.usage.completion_tokens
     ai_response = response.choices[0].message.content
     
     print("AI: ", ai_response, "\n")
     summary_file_path = os.path.join('summaries', f'summary-{proj_name}.txt')
     with open(summary_file_path, 'w') as summary_file:
         summary_file.write(ai_response)
+    print("Price: ", (((prompt_tokens/1000)*0.005) + ((response_tokens/1000)*0.015)))
 
 
 print("\n\n     -----finished-----      \n\n")
+
+
+print("Price: ", (((prompt_tokens/1000)*0.005) + ((response_tokens/1000)*0.015)))
